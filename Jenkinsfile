@@ -1,6 +1,6 @@
 pipeline {
     agent none
-    
+
     stages {
         stage('Unit Tests') {
             agent {
@@ -12,11 +12,11 @@ pipeline {
             }
         }
         stage('build') {
-             agent {
+            agent {
                 label 'apache'
             }
-            steps{
-                sh 'ant -f build.xml -v'         
+            steps {
+                sh 'ant -f build.xml -v'
             }
             post {
                 success {
@@ -25,12 +25,12 @@ pipeline {
             }
         }
         stage('deploy') {
-             agent {
+            agent {
                 label 'apache'
             }
             steps {
                 sh "mkdir /var/www/html/rectangles/all/${env.BRANCH_NAME}"
-                sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}"
+                sh "cp dist/rectangle_${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
             }
         }
         stage("Running on CentOS") {
@@ -72,13 +72,13 @@ pipeline {
             steps {
                 echo "Stashing Any Local Changes"
                 sh 'git stash'
-                echo "Checking out development Branch"
+                echo "Checking Out Development Branch"
                 sh 'git checkout development'
-                echo 'Checking out the Master Branch'
+                echo 'Checking Out Master Branch'
                 sh 'git checkout master'
                 echo 'Merging Development into Master Branch'
                 sh 'git merge development'
-                echo 'Pushing to origin master'
+                echo 'Pushing to Origin Master'
                 sh 'git push origin master'
             }
         }
